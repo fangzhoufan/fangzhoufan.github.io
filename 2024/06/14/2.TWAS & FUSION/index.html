@@ -1,0 +1,639 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>TWAS 分析 | 方舟博客</title><meta name="author" content="方舟"><meta name="copyright" content="方舟"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="TWAS FUSIONTWAS &#x2F; FUSION (gusevlab.org) Installation Download and unpack the FUSION software package from github:  123wget https:&#x2F;&#x2F;github.com&#x2F;gusevlab&#x2F;fusion_twas&#x2F;archive&#x2F;master.zipunzip master.z">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TWAS 分析">
+<meta property="og:url" content="https://fangzhoufan.github.io/2024/06/14/2.TWAS%20&%20FUSION/index.html">
+<meta property="og:site_name" content="方舟博客">
+<meta property="og:description" content="TWAS FUSIONTWAS &#x2F; FUSION (gusevlab.org) Installation Download and unpack the FUSION software package from github:  123wget https:&#x2F;&#x2F;github.com&#x2F;gusevlab&#x2F;fusion_twas&#x2F;archive&#x2F;master.zipunzip master.z">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://gusevlab.org/projects/fusion/SCZ_chr22.png">
+<meta property="article:published_time" content="2024-06-14T14:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-14T14:29:04.847Z">
+<meta property="article:author" content="方舟">
+<meta property="article:tag" content="孟德尔随机化,SMR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://gusevlab.org/projects/fusion/SCZ_chr22.png"><link rel="shortcut icon" href="https://picsum.photos/id/124/3504/2336"><link rel="canonical" href="https://fangzhoufan.github.io/2024/06/14/2.TWAS%20&amp;%20FUSION/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 方舟","link":"链接: ","source":"来源: 方舟博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'TWAS 分析',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-14 22:29:04'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/./img/top_imge.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清單</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 關於</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('http://gusevlab.org/projects/fusion/SCZ_chr22.png')"><nav id="nav"><span id="blog-info"><a href="/" title="方舟博客"><span class="site-name">方舟博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清單</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 關於</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">TWAS 分析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-14T14:00:00.000Z" title="发表于 2024-06-14 22:00:00">2024-06-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-14T14:29:04.847Z" title="更新于 2024-06-14 22:29:04">2024-06-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Post-GWAS-analysis/">Post-GWAS analysis</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="TWAS 分析"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="TWAS-FUSION"><a href="#TWAS-FUSION" class="headerlink" title="TWAS FUSION"></a>TWAS FUSION</h2><p><a target="_blank" rel="noopener" href="http://gusevlab.org/projects/fusion/#multi-context-content-expression">TWAS &#x2F; FUSION (gusevlab.org)</a></p>
+<h3 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h3><ul>
+<li>Download and unpack the <a target="_blank" rel="noopener" href="https://github.com/gusevlab/fusion_twas">FUSION software package from github</a>:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/gusevlab/fusion_twas/archive/master.zip</span><br><span class="line">unzip master.zip</span><br><span class="line"><span class="built_in">cd</span> fusion_twas-master</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Download and unpack the (1000 Genomes) <a target="_blank" rel="noopener" href="https://data.broadinstitute.org/alkesgroup/FUSION/LDREF.tar.bz2">LD reference data</a>:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://data.broadinstitute.org/alkesgroup/FUSION/LDREF.tar.bz2</span><br><span class="line">tar xjvf LDREF.tar.bz2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Download and unpack the <a target="_blank" rel="noopener" href="https://github.com/gabraham/plink2R">plink2R library</a> (by Gad Abraham):</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/gabraham/plink2R/archive/master.zip</span><br><span class="line">unzip master.zip</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Launch R and install required libraries:</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">install.packages<span class="punctuation">(</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&#x27;optparse&#x27;</span><span class="punctuation">,</span><span class="string">&#x27;RColorBrewer&#x27;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">install.packages<span class="punctuation">(</span><span class="string">&#x27;plink2R-master/plink2R/&#x27;</span><span class="punctuation">,</span>repos<span class="operator">=</span><span class="literal">NULL</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Typical-analysis-and-output——Examples"><a href="#Typical-analysis-and-output——Examples" class="headerlink" title="Typical analysis and output——Examples"></a>Typical analysis and output——Examples</h3><blockquote>
+<p><strong>PGC精神分裂症的gwas summary数据对GTEx全血数据进行TWAS</strong></p>
+</blockquote>
+<p>First, download and prepare the GWAS and GTEx whole blood data:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget https://data.broadinstitute.org/alkesgroup/FUSION/SUM/PGC2.SCZ.sumstats</span><br><span class="line"><span class="built_in">mkdir</span> WEIGHTS</span><br><span class="line"><span class="built_in">cd</span> WEIGHTS</span><br><span class="line">wget https://data.broadinstitute.org/alkesgroup/FUSION/WGT/GTEx.Whole_Blood.tar.bz2</span><br><span class="line">tar xjf GTEx.Whole_Blood.tar.bz2</span><br></pre></td></tr></table></figure>
+
+<p>可以用**<a target="_blank" rel="noopener" href="https://github.com/bulik/ldsc">LDSC munge_stats.py</a>**把gwas的格式转为我们需要的。 gwas结果全部输入进去，不要卡阈值。</p>
+<p>Finally, we run <code>FUSION.test.R</code> using this data on chromosome 22:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Rscript FUSION.assoc_test.R \</span><br><span class="line">--sumstats PGC2.SCZ.sumstats \</span><br><span class="line">--weights ./WEIGHTS/GTEx.Whole_Blood.pos \</span><br><span class="line">--weights_dir ./WEIGHTS/ \</span><br><span class="line">--ref_ld_chr ./LDREF/1000G.EUR. \</span><br><span class="line">--chr 22 \</span><br><span class="line">--out PGC2.SCZ.22.dat</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="实战——使用FinnGen数据集进行TWAS分析"><a href="#实战——使用FinnGen数据集进行TWAS分析" class="headerlink" title="实战——使用FinnGen数据集进行TWAS分析"></a>实战——使用FinnGen数据集进行TWAS分析</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##1.数据GWAS 下载链接</span></span><br><span class="line">wget https://storage.googleapis.com/finngen-public-data-r10/summary_stats/finngen_R10_H7_GLAUCCLOSEPRIM.gz</span><br><span class="line"></span><br><span class="line"><span class="comment">##2.数据处理——转换为可以识别的GWAS类型</span></span><br><span class="line">zcat finngen_R10_H7_GLAUCCLOSEPRIM.gz \    <span class="comment"># 解压缩名为 finngen_R10_H7_GLAUCCLOSEPRIM.gz 的文件</span></span><br><span class="line">| awk <span class="string">&#x27;&#123;print $5&quot;\t&quot;$3&quot;\t&quot;$4&quot;\t&quot;$11&quot;\t&quot;$9&quot;\t&quot;$10&quot;\t&quot;$7&quot;&#125;&#x27;</span> \  <span class="comment"># 使用 awk 提取感兴趣的列并按指定格式输出</span></span><br><span class="line">| grep <span class="string">&#x27;rs&#x27;</span> \   <span class="comment"># 过滤包含 &#x27;rs&#x27; 的行</span></span><br><span class="line">| grep -v <span class="string">&#x27;,&#x27;</span> \  <span class="comment"># 过滤掉含有逗号的行</span></span><br><span class="line">&gt; finngen_R10_H7_GLAUCCLOSEPRIM.gwas   <span class="comment"># 将结果保存到 finngen_R10_H7_GLAUCCLOSEPRIM.gwas 文件中</span></span><br></pre></td></tr></table></figure>
+
+<p>下方我们使用ldsc相关软件时候，我们需要进入anaconda的命令行 ，就是安装了相关环境的python中，python2.7，然后munge_sumstats.py执行下列代码</p>
+<p>w_hm3.snplist文件从：<a target="_blank" rel="noopener" href="https://github.com/perslab/CELLECT/blob/master/data/ldsc/w_hm3.snplist">https://github.com/perslab/CELLECT/blob/master/data/ldsc/w_hm3.snplist</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">###2.TWAS 分析</span></span><br><span class="line"><span class="comment">##处理成TWAS输入格式文件</span></span><br><span class="line"><span class="comment">#清洗数据 </span></span><br><span class="line">munge_sumstats.py \</span><br><span class="line">--sumstats finngen_R10_H7_GLAUCCLOSEPRIM.gwas \</span><br><span class="line">--signed-sumstats beta \</span><br><span class="line">--snp rsids \</span><br><span class="line">--a1 alt \</span><br><span class="line">--a2 ref \</span><br><span class="line">--p pval \</span><br><span class="line">--N 392582 \</span><br><span class="line">--merge-alleles w_hm3.snplist \</span><br><span class="line">--out finngen_R10_H7_GLAUCCLOSEPRIM</span><br><span class="line">--chunksize 500000</span><br><span class="line"></span><br><span class="line"><span class="comment">##超算平台代码</span></span><br><span class="line">python <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/ldsc/munge_sumstats.py&quot;</span>  --sumstats finngen_R10_H7_GLAUCCLOSEPRIM.gwas --merge-alleles --N 392582 --snp rsids  --a1 alt --a2 ref --p pval  --out finngen_R10_H7_GLAUCCLOSEPRIM --chunksize 500000</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里的N指的是研究的样本数量；<br>finngen_R10_H7_GLAUCCLOSEPRIM.gwas是输出的文件名；<br>w_hm3.snplist是被纳入分析的SNP，包含三列：包含rs编号、位置、A1（效应等位基因）、A2（无效等位基因）# 这一步可有可无<br>如果想把所有的SNP位点纳入分析，那么采用这个命令： <code>munge_sumstats.py --sumstats summary.txt --N 17115 --out s</code></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##R环境</span></span><br><span class="line">conda activate twasR</span><br><span class="line"></span><br><span class="line"><span class="comment">##twas 分析</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">seq</span> 1 22); <span class="keyword">do</span> Rscript <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/fusion_twas_master/FUSION.assoc_test.R&quot;</span> --sumstats  finngen_R10_H7_GLAUCCLOSEPRIM.sumstats.gz --weights <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/GTExV8/GTExv8.EUR.Whole_Blood.pos&quot;</span> --weights_dir <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/GTExV8/&quot;</span>  --ref_ld_chr <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/fusion_twas_master/LDREF/1000G.EUR.&quot;</span>  --chr <span class="variable">$i</span> --out qgy_blood_<span class="variable">$i</span>.twas; <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">seq</span> 1 22); <span class="keyword">do</span> </span><br><span class="line">    Rscript <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/fusion_twas-master/FUSION.assoc_test.R&quot;</span> \</span><br><span class="line">    --sumstats  finngen_R10_H7_GLAUCCLOSEPRIM.sumstats.gz \</span><br><span class="line">    --weights <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/GTExV8/GTExv8.EUR.Whole_Blood.pos&quot;</span> \</span><br><span class="line">    --weights_dir <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/GTExV8/&quot;</span> \</span><br><span class="line">    --ref_ld_chr <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/fusion_twas-master/LDREF/1000G.EUR.&quot;</span> \</span><br><span class="line">    --chr <span class="variable">$i</span> \</span><br><span class="line">    --out qgy_blood_<span class="variable">$i</span>.twas </span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>上述使用twas分析需要载入R 所以我们需要在anaconda切换到R所在的环境，并且也要安装需要的R包</p>
+<p>weight就是参考使用的，这里用的GTExV8里面的</p>
+<h3 id="实战2——LUAD"><a href="#实战2——LUAD" class="headerlink" title="实战2——LUAD"></a>实战2——LUAD</h3><p>在之前一定要配置好相关文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ssh admin2</span><br><span class="line">screen -<span class="built_in">ls</span></span><br><span class="line">screen -r +地址  <span class="comment">##进入screen操作页面</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">&quot;/public/home/fanfangzhou/R/2024science/10.LUAD/1.SMR/&quot;</span></span><br><span class="line"><span class="built_in">source</span> activate /public/home/fanfangzhou/anaconda/anaconda3/envs/ldsc  <span class="comment">##这里就是之前LDSC配置的python2.7环境</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#LUAD.ma的数据包括：SNP    A1  A2  freq    b   se  p   n 这些数据，是按照标准的SMR需要的gwas格式整理的</span></span><br><span class="line">python <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/ldsc/munge_sumstats.py&quot;</span>  --sumstats LUAD.ma  --N 66756 --out LUAD --chunksize 500000</span><br><span class="line"></span><br><span class="line">conda activate /public/home/fanfangzhou/anaconda/anaconda3/envs/twasR</span><br><span class="line"><span class="comment">##twas 分析：whole blood</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">seq</span> 1 22); <span class="keyword">do</span> Rscript <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/fusion_twas_master/FUSION.assoc_test.R&quot;</span> --sumstats  LUAD.sumstats.gz --weights <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/GTExV8/GTExV8.EUR/GTExv8.EUR.Whole_Blood.pos&quot;</span> --weights_dir <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/GTExV8/GTExV8.EUR/&quot;</span>  --ref_ld_chr <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/fusion_twas_master/LDREF/1000G.EUR.&quot;</span>  --chr <span class="variable">$i</span> --out TWAS_Whole_Blood_<span class="variable">$i</span>.twas; <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##twas 分析：lung</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">seq</span> 1 22); <span class="keyword">do</span> Rscript <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/fusion_twas_master/FUSION.assoc_test.R&quot;</span> --sumstats  LUAD.sumstats.gz --weights <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/GTExV8/GTExV8.EUR/GTExv8.EUR.Lung.pos&quot;</span> --weights_dir <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/GTExV8/GTExV8.EUR/&quot;</span>  --ref_ld_chr <span class="string">&quot;/public/home/fanfangzhou/R/TWAS/fusion_twas_master/LDREF/1000G.EUR.&quot;</span>  --chr <span class="variable">$i</span> --out LUAD_lung_<span class="variable">$i</span>.twas; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="TWAS-相关数据库"><a href="#TWAS-相关数据库" class="headerlink" title="TWAS 相关数据库"></a>TWAS 相关数据库</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://ngdc.cncb.ac.cn/twas/">Home - TWAS Atlas - CNCB-NGDC</a></li>
+</ul>
+<h3 id="TWAS-可使用的参数模型"><a href="#TWAS-可使用的参数模型" class="headerlink" title="TWAS 可使用的参数模型"></a>TWAS 可使用的参数模型</h3><h4 id="GTEx-v8-multi-tissue-expression"><a href="#GTEx-v8-multi-tissue-expression" class="headerlink" title="GTEx v8 multi-tissue expression"></a>GTEx v8 multi-tissue expression</h4><p>Each archive contains two sets of <code>pos</code> files, one for genes with significant heritability and one for all genes (labeled <code>no_filter</code>). Using genes that achieved significant heritability is recommended for typical analyses. Using weights from “All Samples” will also typically increase sensitivity, unless analyzing highly European-specific regions. A detailed comparison of models by population and GTEx version is provided <a target="_blank" rel="noopener" href="http://gusevlab.org/projects/fusion/gtex_v8.html">here</a>. Positions in the <code>pos</code> files are taken from GTEx annotations.</p>
+<p>Weights were kindly estimated and provided by Junghyun Jung in the <a target="_blank" rel="noopener" href="https://www.mancusolab.com/">Mancuso lab</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Tissue</th>
+<th>All Samples</th>
+<th>link</th>
+<th>EUR Samples</th>
+<th>link</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Adipose - Subcutaneous</td>
+<td>581</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Adipose_Subcutaneous.tar.gz">download</a></td>
+<td>479</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Adipose_Subcutaneous.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Adipose - Visceral (Omentum)</td>
+<td>469</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Adipose_Visceral_Omentum.tar.gz">download</a></td>
+<td>393</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Adipose_Visceral_Omentum.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Adrenal Gland</td>
+<td>233</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Adrenal_Gland.tar.gz">download</a></td>
+<td>194</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Adrenal_Gland.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Artery - Aorta</td>
+<td>387</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Artery_Aorta.tar.gz">download</a></td>
+<td>329</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Artery_Aorta.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Artery - Coronary</td>
+<td>213</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Artery_Coronary.tar.gz">download</a></td>
+<td>175</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Artery_Coronary.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Artery - Tibial</td>
+<td>584</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Artery_Tibial.tar.gz">download</a></td>
+<td>476</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Artery_Tibial.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Amygdala</td>
+<td>129</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Amygdala.tar.gz">download</a></td>
+<td>119</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Amygdala.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Anterior cingulate cortex (BA24)</td>
+<td>147</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Anterior_cingulate_cortex_BA24.tar.gz">download</a></td>
+<td>135</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Anterior_cingulate_cortex_BA24.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Caudate (basal ganglia)</td>
+<td>194</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Caudate_basal_ganglia.tar.gz">download</a></td>
+<td>172</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Caudate_basal_ganglia.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Cerebellar Hemisphere</td>
+<td>175</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Cerebellar_Hemisphere.tar.gz">download</a></td>
+<td>157</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Cerebellar_Hemisphere.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Cerebellum</td>
+<td>209</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Cerebellum.tar.gz">download</a></td>
+<td>188</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Cerebellum.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Cortex</td>
+<td>205</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Cortex.tar.gz">download</a></td>
+<td>183</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Cortex.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Frontal Cortex (BA9)</td>
+<td>175</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Frontal_Cortex_BA9.tar.gz">download</a></td>
+<td>157</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Frontal_Cortex_BA9.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Hippocampus</td>
+<td>165</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Hippocampus.tar.gz">download</a></td>
+<td>150</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Hippocampus.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Hypothalamus</td>
+<td>170</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Hypothalamus.tar.gz">download</a></td>
+<td>156</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Hypothalamus.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Nucleus accumbens (basal ganglia)</td>
+<td>202</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Nucleus_accumbens_basal_ganglia.tar.gz">download</a></td>
+<td>181</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Nucleus_accumbens_basal_ganglia.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Putamen (basal ganglia)</td>
+<td>170</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Putamen_basal_ganglia.tar.gz">download</a></td>
+<td>153</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Putamen_basal_ganglia.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Spinal cord (cervical c-1)</td>
+<td>126</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Spinal_cord_cervical_c-1.tar.gz">download</a></td>
+<td>115</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Spinal_cord_cervical_c-1.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Brain - Substantia nigra</td>
+<td>114</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Brain_Substantia_nigra.tar.gz">download</a></td>
+<td>100</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Brain_Substantia_nigra.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Breast - Mammary Tissue</td>
+<td>396</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Breast_Mammary_Tissue.tar.gz">download</a></td>
+<td>329</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Breast_Mammary_Tissue.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Skin - Transformed fibroblasts</td>
+<td>483</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Cells_Cultured_fibroblasts.tar.gz">download</a></td>
+<td>403</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Cells_Cultured_fibroblasts.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Blood - EBV-transformed lymphocytes</td>
+<td>147</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Cells_EBV-transformed_lymphocytes.tar.gz">download</a></td>
+<td>113</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Cells_EBV-transformed_lymphocytes.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Colon - Sigmoid</td>
+<td>318</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Colon_Sigmoid.tar.gz">download</a></td>
+<td>266</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Colon_Sigmoid.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Colon - Transverse</td>
+<td>368</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Colon_Transverse.tar.gz">download</a></td>
+<td>294</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Colon_Transverse.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Esophagus - Gastroesophageal Junction</td>
+<td>330</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Esophagus_Gastroesophageal_Junction.tar.gz">download</a></td>
+<td>275</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Esophagus_Gastroesophageal_Junction.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Esophagus - Mucosa</td>
+<td>497</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Esophagus_Mucosa.tar.gz">download</a></td>
+<td>411</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Esophagus_Mucosa.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Esophagus - Muscularis</td>
+<td>465</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Esophagus_Muscularis.tar.gz">download</a></td>
+<td>385</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Esophagus_Muscularis.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Heart - Atrial Appendage</td>
+<td>372</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Heart_Atrial_Appendage.tar.gz">download</a></td>
+<td>316</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Heart_Atrial_Appendage.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Heart - Left Ventricle</td>
+<td>386</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Heart_Left_Ventricle.tar.gz">download</a></td>
+<td>327</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Heart_Left_Ventricle.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Kidney - Cortex</td>
+<td>73</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Kidney_Cortex.tar.gz">download</a></td>
+<td>65</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Kidney_Cortex.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Liver</td>
+<td>208</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Liver.tar.gz">download</a></td>
+<td>178</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Liver.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Lung</td>
+<td>515</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Lung.tar.gz">download</a></td>
+<td>436</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Lung.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Minor Salivary Gland</td>
+<td>144</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Minor_Salivary_Gland.tar.gz">download</a></td>
+<td>114</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Minor_Salivary_Gland.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Muscle - Skeletal</td>
+<td>706</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Muscle_Skeletal.tar.gz">download</a></td>
+<td>588</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Muscle_Skeletal.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Nerve - Tibial</td>
+<td>532</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Nerve_Tibial.tar.gz">download</a></td>
+<td>438</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Nerve_Tibial.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Ovary</td>
+<td>167</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Ovary.tar.gz">download</a></td>
+<td>138</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Ovary.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Pancreas</td>
+<td>305</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Pancreas.tar.gz">download</a></td>
+<td>243</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Pancreas.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Pituitary</td>
+<td>237</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Pituitary.tar.gz">download</a></td>
+<td>219</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Pituitary.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Prostate</td>
+<td>221</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Prostate.tar.gz">download</a></td>
+<td>181</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Prostate.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Skin - Not Sun Exposed (Suprapubic)</td>
+<td>517</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Skin_Not_Sun_Exposed_Suprapubic.tar.gz">download</a></td>
+<td>430</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Skin_Not_Sun_Exposed_Suprapubic.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Skin - Sun Exposed (Lower leg)</td>
+<td>605</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Skin_Sun_Exposed_Lower_leg.tar.gz">download</a></td>
+<td>508</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Skin_Sun_Exposed_Lower_leg.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Small Intestine - Terminal Ileum</td>
+<td>174</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Small_Intestine_Terminal_Ileum.tar.gz">download</a></td>
+<td>141</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Small_Intestine_Terminal_Ileum.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Spleen</td>
+<td>227</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Spleen.tar.gz">download</a></td>
+<td>179</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Spleen.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Stomach</td>
+<td>324</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Stomach.tar.gz">download</a></td>
+<td>260</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Stomach.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Testis</td>
+<td>322</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Testis.tar.gz">download</a></td>
+<td>272</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Testis.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Thyroid</td>
+<td>574</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Thyroid.tar.gz">download</a></td>
+<td>482</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Thyroid.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Uterus</td>
+<td>129</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Uterus.tar.gz">download</a></td>
+<td>107</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Uterus.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Vagina</td>
+<td>141</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Vagina.tar.gz">download</a></td>
+<td>120</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Vagina.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>Whole Blood</td>
+<td>670</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/ALL/GTExv8.ALL.Whole_Blood.tar.gz">download</a></td>
+<td>558</td>
+<td><a target="_blank" rel="noopener" href="https://s3.us-west-1.amazonaws.com/gtex.v8.fusion/EUR/GTExv8.EUR.Whole_Blood.tar.gz">download</a></td>
+</tr>
+</tbody></table>
+<p><em>For reproducibility, legacy models from GTEx v7 are available for <a target="_blank" rel="noopener" href="http://gusevlab.org/projects/fusion/weights/GTEX7.txt">significant genes</a> and <a target="_blank" rel="noopener" href="http://gusevlab.org/projects/fusion/weights/GTEX7ALL.txt">all genes</a>. Legacy models from GTEx v6 are also available for <a target="_blank" rel="noopener" href="https://data.broadinstitute.org/alkesgroup/FUSION/WGT/GTEx.ALL.tar">significant genes</a>. See <a target="_blank" rel="noopener" href="http://gusevlab.org/projects/fusion/gtex.html">here</a> for a comparison of GTEx v6 and v7 model performance.</em></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://fangzhoufan.github.io">方舟</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://fangzhoufan.github.io/2024/06/14/2.TWAS%20&amp;%20FUSION/">https://fangzhoufan.github.io/2024/06/14/2.TWAS%20&amp;%20FUSION/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://fangzhoufan.github.io" target="_blank">方舟博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="http://gusevlab.org/projects/fusion/SCZ_chr22.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/06/14/10.SMR/" title="SMR 分析"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">SMR 分析</div></div></a></div><div class="next-post pull-right"><a href="/2024/06/14/4.LDSC%20software/" title="LDSC 分析"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">LDSC 分析</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Valine</span><span class="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/./img/top_imge.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">方舟</div><div class="author-info__description">要人心之自由，胸襟开放；要有一个远见，超越未见</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/fangzhoufan"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/fangzhoufan" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:haohaojiu@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.zhihu.com/people/ha-hao-jiu-54" target="_blank" title="Zhihu"><i class="fab fa-zhihu"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TWAS-FUSION"><span class="toc-number">1.</span> <span class="toc-text">TWAS FUSION</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Installation"><span class="toc-number">1.1.</span> <span class="toc-text">Installation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Typical-analysis-and-output%E2%80%94%E2%80%94Examples"><span class="toc-number">1.2.</span> <span class="toc-text">Typical analysis and output——Examples</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%E2%80%94%E2%80%94%E4%BD%BF%E7%94%A8FinnGen%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E8%A1%8CTWAS%E5%88%86%E6%9E%90"><span class="toc-number">1.3.</span> <span class="toc-text">实战——使用FinnGen数据集进行TWAS分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%88%982%E2%80%94%E2%80%94LUAD"><span class="toc-number">1.4.</span> <span class="toc-text">实战2——LUAD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TWAS-%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.5.</span> <span class="toc-text">TWAS 相关数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TWAS-%E5%8F%AF%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8F%82%E6%95%B0%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.6.</span> <span class="toc-text">TWAS 可使用的参数模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#GTEx-v8-multi-tissue-expression"><span class="toc-number">1.6.1.</span> <span class="toc-text">GTEx v8 multi-tissue expression</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/14/10.SMR/" title="SMR 分析">SMR 分析</a><time datetime="2024-06-14T14:00:00.000Z" title="发表于 2024-06-14 22:00:00">2024-06-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/14/2.TWAS%20&amp;%20FUSION/" title="TWAS 分析"><img src="http://gusevlab.org/projects/fusion/SCZ_chr22.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TWAS 分析"/></a><div class="content"><a class="title" href="/2024/06/14/2.TWAS%20&amp;%20FUSION/" title="TWAS 分析">TWAS 分析</a><time datetime="2024-06-14T14:00:00.000Z" title="发表于 2024-06-14 22:00:00">2024-06-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/14/4.LDSC%20software/" title="LDSC 分析">LDSC 分析</a><time datetime="2024-06-14T14:00:00.000Z" title="发表于 2024-06-14 22:00:00">2024-06-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 方舟</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script>function loadDisqus () {
+  var disqus_config = function () {
+    this.page.url = 'https://fangzhoufan.github.io/2024/06/14/2.TWAS%20&%20FUSION/'
+    this.page.identifier = '/2024/06/14/2.TWAS%20&%20FUSION/'
+    this.page.title = 'TWAS 分析'
+  };
+
+  window.disqusReset = () => {
+    DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  if (window.DISQUS) disqusReset()
+  else {
+    (function() { 
+      var d = document, s = d.createElement('script');
+      s.src = 'https://.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  }
+
+  document.getElementById('darkmode').addEventListener('click', () => {
+    setTimeout(() => window.disqusReset(), 200)
+  })
+}
+
+if ('Valine' === 'Disqus' || !true) {
+  if (true) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+  else loadDisqus()
+} else {
+  function loadOtherComment () {
+    loadDisqus()
+  }
+}
+</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

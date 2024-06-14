@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>LDSC 分析 | 方舟博客</title><meta name="author" content="方舟"><meta name="copyright" content="方舟"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="连锁不平衡分数回归 LD score regression -LDSCLDSC原理为什么要做 LD score regression 在GWAS研究中，多基因性（polygenicity，即若干较小的基因效应）和干扰因素引起的偏差（如隐性关联 cryptic relatedness，群体分层population stratification等）都会造成检验的统计量的分布偏高（inflated）。但">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LDSC 分析">
+<meta property="og:url" content="https://fangzhoufan.github.io/2024/06/14/4.LDSC%20software/index.html">
+<meta property="og:site_name" content="方舟博客">
+<meta property="og:description" content="连锁不平衡分数回归 LD score regression -LDSCLDSC原理为什么要做 LD score regression 在GWAS研究中，多基因性（polygenicity，即若干较小的基因效应）和干扰因素引起的偏差（如隐性关联 cryptic relatedness，群体分层population stratification等）都会造成检验的统计量的分布偏高（inflated）。但">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fangzhoufan.github.io/img/top_imge.jpg">
+<meta property="article:published_time" content="2024-06-14T14:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-14T13:56:04.917Z">
+<meta property="article:author" content="方舟">
+<meta property="article:tag" content="孟德尔随机化,SMR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fangzhoufan.github.io/img/top_imge.jpg"><link rel="shortcut icon" href="https://picsum.photos/id/124/3504/2336"><link rel="canonical" href="https://fangzhoufan.github.io/2024/06/14/4.LDSC%20software/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 方舟","link":"链接: ","source":"来源: 方舟博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'LDSC 分析',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-14 21:56:04'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/./img/top_imge.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清單</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 關於</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="方舟博客"><span class="site-name">方舟博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清單</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 關於</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">LDSC 分析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-14T14:00:00.000Z" title="发表于 2024-06-14 22:00:00">2024-06-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-14T13:56:04.917Z" title="更新于 2024-06-14 21:56:04">2024-06-14</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="LDSC 分析"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="连锁不平衡分数回归-LD-score-regression-LDSC"><a href="#连锁不平衡分数回归-LD-score-regression-LDSC" class="headerlink" title="连锁不平衡分数回归 LD score regression -LDSC"></a>连锁不平衡分数回归 LD score regression -LDSC</h2><h3 id="LDSC原理"><a href="#LDSC原理" class="headerlink" title="LDSC原理"></a>LDSC原理</h3><p>为什么要做 LD score regression</p>
+<p>在GWAS研究中，多基因性（polygenicity，即若干较小的基因效应）和干扰因素引起的偏差（如隐性关联 cryptic relatedness，群体分层population stratification等）都会造成检验的统计量的分布偏高（inflated）。但我们并不能分辨偏高的统计量到底是来自多基因性还是干扰因素，所以通过LD score regression，我们可以通过研究检验统计量与连锁不平衡（linkage disequilibrium）之间的关系来定量分析每部分的影响。</p>
+<p><strong>LDscore的原理？</strong></p>
+<p><strong>GWAS检验中，对一个SNP效应量的估计通常也会包含与该SNP成LD的其他SNP的效应，也就是说一个与其他SNP成高LD的SNP，通常也会有更高的卡方检验量。</strong></p>
+<p>接下来简单介绍如何进行LDscore regression。使用的软件为ldsc，可以从作者的github中拉取。ldsc为python脚本，clone了ldsc的库之后我们还需要利用anaconda配置环境，下载相关联的package。</p>
+<p>ldsc：<a target="_blank" rel="noopener" href="https://github.com/bulik/ldsc">https://github.com/bulik/ldsc</a></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/bulik/ldsc.git</span><br><span class="line">cd ldsc</span><br><span class="line">conda env create --file environment.yml ##一定要通过conda来配置相同环境 让他自己配置，他这个配置基于</span><br><span class="line">source activate ldsc</span><br></pre></td></tr></table></figure>
+
+<p>以上步骤完成后，可以输入以下命令来检测是否安装成功</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./ldsc.py -h</span><br><span class="line">./munge_sumstats.py -h</span><br></pre></td></tr></table></figure>
+
+<p>除此以外，还需要相应群体的LD score，好消息是作者提供了处理好的欧洲 European 与 东亚 East asian的基于1000 genome的LD score以供我们使用，可以通过以下链接下载：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://fileserve.mrcieu.ac.uk/ld/1kg.v3.tgz">http://fileserve.mrcieu.ac.uk/ld/1kg.v3.tgz</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/perslab/CELLECT/blob/master/data/ldsc/w_hm3.snplist">https://github.com/perslab/CELLECT/blob/master/data/ldsc/w_hm3.snplist</a></li>
+</ul>
+<h3 id="使用教程"><a href="#使用教程" class="headerlink" title="使用教程"></a>使用教程</h3><p>本教程改编自： <a href="https://link.zhihu.com/?target=https://github.com/bulik/ldsc/wiki/Heritability-and-Genetic-Correlation">https://github.com/bulik/ldsc/wiki/Heritability-and-Genetic-Correlation</a></p>
+<p>主要介绍：1.the LD Score regression intercept for a schizophrenia GWAS 与 2.the SNP-heritability for schizophrenia</p>
+<p>使用的数据来自 2013年发表的 <a href="https://link.zhihu.com/?target=http://www.ncbi.nlm.nih.gov/pubmed/23453885">PGC Cross-Disorder paper in the Lancet</a>.，精神分裂症 sci 与 双相障碍 bip</p>
+<h4 id="1-准备步骤"><a href="#1-准备步骤" class="headerlink" title="1 准备步骤"></a>1 准备步骤</h4><p>下载LD score</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://data.broadinstitute.org/alkesgroup/LDSCORE/eur_w_ld_chr.tar.bz2</span><br><span class="line">tar -jxvf eur_w_ld_chr.tar.bz2</span><br></pre></td></tr></table></figure>
+
+<p>下载GWAS summary 统计量数据</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget www.med.unc.edu/pgc/files/resultfiles/pgc.cross.bip.zip</span><br><span class="line">wget www.med.unc.edu/pgc/files/resultfiles/pgc.cross.scz.zip</span><br></pre></td></tr></table></figure>
+
+<p>下载后解压，head命令查看文件是否正确</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">head pgc.cross.BIP11.2013-05.txt</span><br><span class="line"></span><br><span class="line">snpid hg18chr bp a1 a2 or se pval info ngt CEUaf</span><br><span class="line">rs3131972	1	742584	A	G	1.092	0.0817	0.2819	0.694	0	0.16055</span><br><span class="line">rs3131969	1	744045	A	G	1.087	0.0781	0.2855	0.939	0	0.133028</span><br><span class="line">rs3131967	1	744197	T	C	1.093	0.0835	0.2859	0.869	0	.</span><br><span class="line"></span><br><span class="line">head pgc.cross.SCZ17.2013-05.txt</span><br><span class="line"></span><br><span class="line">snpid hg18chr bp a1 a2 or se pval info ngt CEUaf</span><br><span class="line">rs3131972	1	742584	A	G	1	0.0966	0.9991	0.702	0	0.16055</span><br><span class="line">rs3131969	1	744045	A	G	1	0.0925	0.9974	0.938	0	0.133028</span><br><span class="line">rs3131967	1	744197	T	C	1.001	0.0991	0.9928	0.866	0	.</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-第一步-数据清理-（munge-sumstats-py）"><a href="#2-第一步-数据清理-（munge-sumstats-py）" class="headerlink" title="2 第一步 数据清理 （munge_sumstats.py）"></a>2 第一步 数据清理 （munge_sumstats.py）</h4><p>原始数据并不是ldsc所需要的.sumstats 格式，所以我们需要先清理并提取需要的数据。利用ldsc附带的munge_sumstats.py可以将原始数据转换成.sumstats 格式。</p>
+<p>The <code>ldsc</code> <code>.sumstats</code> format requires six pieces of information for each SNP:</p>
+<ol>
+<li>A unique identifier (e.g., the rs number)</li>
+<li>Allele 1 (effect allele)</li>
+<li>Allele 2 (non-effect allele)</li>
+<li>Sample size (which often varies from SNP to SNP)</li>
+<li>A P-value</li>
+<li>A signed summary statistic (beta, OR, log odds, Z-score, etc)</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">wget https://data.broadinstitute.org/alkesgroup/LDSCORE/w_hm3.snplist.bz2</span><br><span class="line">bunzip2 w_hm3.snplist.bz2</span><br><span class="line"></span><br><span class="line">munge_sumstats.py \</span><br><span class="line">--sumstats pgc.cross.SCZ17.2013-05.txt \</span><br><span class="line">--N 17115 \</span><br><span class="line">--out scz \</span><br><span class="line">--merge-alleles w_hm3.snplist</span><br><span class="line"></span><br><span class="line">munge_sumstats.py \</span><br><span class="line">--sumstats pgc.cross.BIP11.2013-05.txt \</span><br><span class="line">--N 11810 \</span><br><span class="line">--out bip \</span><br><span class="line">--merge-alleles w_hm3.snplist</span><br></pre></td></tr></table></figure>
+
+<p>注意：有时数据量较大时程序会卡死，无响应状态，可以尝试在选项中加上 –chunksize 500000 以解决此问题</p>
+<p>输出的log文件</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Metadata:</span><br><span class="line">Mean chi^2 = 1.229</span><br><span class="line">Lambda GC = 1.201</span><br><span class="line">Max chi^2 = 32.4</span><br><span class="line">11 Genome-wide significant SNPs (some may have been removed by filtering).</span><br><span class="line"> </span><br><span class="line">Conversion finished at Mon Apr  4 13:21:29 2016</span><br><span class="line">Total time elapsed: 16.07s </span><br></pre></td></tr></table></figure>
+
+<h4 id="3-第二步-LD-score-regression"><a href="#3-第二步-LD-score-regression" class="headerlink" title="3 第二步 LD score regression"></a>3 第二步 LD score regression</h4><p>利用清理好的数据，我们可以开始进行LD score regression，使用的是主程序ldsc.py</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ldsc.py \</span><br><span class="line">--h2 scz.sumstats.gz \</span><br><span class="line">--ref-ld-chr eur_w_ld_chr/ \</span><br><span class="line">--w-ld-chr eur_w_ld_chr/ \</span><br><span class="line">--out scz_h2</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>--</code>h2 ：计算遗传力，参数为上一步处理好的数据文件名</p>
+<p><code>--ref-ld-chr</code> ：使用的按染色体号分类的LD score文件名，参数为LD score文件所在文件夹的路径。默认情况下ldsc会在文件名末尾添加染色体号，例如 <code>--ref-ld-chr eur_w_ld_chr/</code> 的意思就是使用 <code>eur_w_ld_chr/1.l2.ldscore ...</code> <code>eur_w_ld_chr/22.l2.ldscore</code> <code>这些文件</code>。如果你的染色体号在其他位置，也可以使用@来告诉LDSC，例如 <code>--ref-ld-chr ld/chr@</code> 。当然也可以用 <code>--ref-ld</code> 来指定一个整体的LD score文件。</p>
+<p><code>--w-ld-chr</code>：指定ldsc回归权重所用的LDscore文件，理论上对于SNPj的LD分数，应当包含这个SNP与其他所有SNP的R2之和，但实际操作中，LD score回归对于计算权重的SNP的选择并不敏感，所以一般情况下我们可以使用与 <code>--ref-ld</code> 与相同的文件。.</p>
+<p><code>--out</code> ： 输出文件的路径与前缀</p>
+</blockquote>
+<hr>
+<p>ldsc输出的log文件结尾就是我们所要的结果，</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Total Observed scale h2: 0.5907 (0.0484)</span><br><span class="line">Lambda GC: 1.2038</span><br><span class="line">Mean Chi^2: 1.2336</span><br><span class="line">Intercept: 1.0014 (0.0113)</span><br><span class="line">Ratio: 0.0059 (0.0482)</span><br></pre></td></tr></table></figure>
+
+<p>结果解读：</p>
+<p>Total Observed scale h2： 总的观测尺度的遗传力 （详见<a href="https://link.zhihu.com/?target=https://gwaslab.com/2021/04/15/liability-scale-heritability-observed-scale-heri/">易感性尺度遗传力与观测尺度遗传力 Liability scale heritability &amp; observed scale heritability</a>）</p>
+<p>Lambda GC 与 Mean chi^2： 用于评估群体分层与隐性关联的影响</p>
+<p>Ratio： 定义为<em>attenuation ratio</em> &#x3D; (<em>LDSC</em> intercept – 1) &#x2F; (mean χ2 – 1)， 衰减比：用来估计混淆因素与遗传效应的相对平衡</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://fangzhoufan.github.io">方舟</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://fangzhoufan.github.io/2024/06/14/4.LDSC%20software/">https://fangzhoufan.github.io/2024/06/14/4.LDSC%20software/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://fangzhoufan.github.io" target="_blank">方舟博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/./img/top_imge.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2024/06/14/2.TWAS%20&amp;%20FUSION/" title="TWAS 分析"><img class="cover" src="http://gusevlab.org/projects/fusion/SCZ_chr22.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">TWAS 分析</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Valine</span><span class="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/./img/top_imge.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">方舟</div><div class="author-info__description">要人心之自由，胸襟开放；要有一个远见，超越未见</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/fangzhoufan"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/fangzhoufan" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:haohaojiu@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.zhihu.com/people/ha-hao-jiu-54" target="_blank" title="Zhihu"><i class="fab fa-zhihu"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E9%94%81%E4%B8%8D%E5%B9%B3%E8%A1%A1%E5%88%86%E6%95%B0%E5%9B%9E%E5%BD%92-LD-score-regression-LDSC"><span class="toc-number">1.</span> <span class="toc-text">连锁不平衡分数回归 LD score regression -LDSC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LDSC%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">LDSC原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">使用教程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%87%86%E5%A4%87%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.2.1.</span> <span class="toc-text">1 准备步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%AC%AC%E4%B8%80%E6%AD%A5-%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86-%EF%BC%88munge-sumstats-py%EF%BC%89"><span class="toc-number">1.2.2.</span> <span class="toc-text">2 第一步 数据清理 （munge_sumstats.py）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%AC%AC%E4%BA%8C%E6%AD%A5-LD-score-regression"><span class="toc-number">1.2.3.</span> <span class="toc-text">3 第二步 LD score regression</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/14/10.SMR/" title="SMR 分析">SMR 分析</a><time datetime="2024-06-14T14:00:00.000Z" title="发表于 2024-06-14 22:00:00">2024-06-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/14/2.TWAS%20&amp;%20FUSION/" title="TWAS 分析"><img src="http://gusevlab.org/projects/fusion/SCZ_chr22.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TWAS 分析"/></a><div class="content"><a class="title" href="/2024/06/14/2.TWAS%20&amp;%20FUSION/" title="TWAS 分析">TWAS 分析</a><time datetime="2024-06-14T14:00:00.000Z" title="发表于 2024-06-14 22:00:00">2024-06-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/14/4.LDSC%20software/" title="LDSC 分析">LDSC 分析</a><time datetime="2024-06-14T14:00:00.000Z" title="发表于 2024-06-14 22:00:00">2024-06-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 方舟</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script>function loadDisqus () {
+  var disqus_config = function () {
+    this.page.url = 'https://fangzhoufan.github.io/2024/06/14/4.LDSC%20software/'
+    this.page.identifier = '/2024/06/14/4.LDSC%20software/'
+    this.page.title = 'LDSC 分析'
+  };
+
+  window.disqusReset = () => {
+    DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  if (window.DISQUS) disqusReset()
+  else {
+    (function() { 
+      var d = document, s = d.createElement('script');
+      s.src = 'https://.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  }
+
+  document.getElementById('darkmode').addEventListener('click', () => {
+    setTimeout(() => window.disqusReset(), 200)
+  })
+}
+
+if ('Valine' === 'Disqus' || !true) {
+  if (true) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+  else loadDisqus()
+} else {
+  function loadOtherComment () {
+    loadDisqus()
+  }
+}
+</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
